@@ -24,11 +24,13 @@ variables:
   SERVER_IMAGE_NAME: region-analytics/region-analytics-server
   SERVER_IMAGE_TAG: 1.0.3
   SERVER_FULL_IMAGE_NAME: "${IMAGE_REGISTRY}/${IMAGE_PATH}/${SERVER_IMAGE_NAME}:${SERVER_IMAGE_TAG}"
+  SERVER_FULL_IMAGE_LATEST: "${IMAGE_REGISTRY}/${IMAGE_PATH}/${SERVER_IMAGE_NAME}:latest"
 
   # API image
   API_IMAGE_NAME: region-analytics/region-analytics-api
   API_IMAGE_TAG: 1.0.3
   API_FULL_IMAGE_NAME: "${IMAGE_REGISTRY}/${IMAGE_PATH}/${API_IMAGE_NAME}:${API_IMAGE_TAG}"
+  API_FULL_IMAGE_LATEST: "${IMAGE_REGISTRY}/${IMAGE_PATH}/${API_IMAGE_NAME}:latest"
 
   DOCKER_BUILDKIT: "1"
   TARGET_ARCH: "linux/arm64"
@@ -73,16 +75,29 @@ build-image:
     - echo $SERVER_FULL_IMAGE_NAME
     - cd $CI_PROJECT_DIR/solutions-microservices/${REGION_SOURCE_PATH}/${SERVER_SRC_DIR} && docker build --platform ${TARGET_ARCH} -t "$SERVER_FULL_IMAGE_NAME" .
 
+    - echo "Tagging the just-built image as :latest"
+    - docker tag "${SERVER_FULL_IMAGE_NAME}" "${SERVER_FULL_IMAGE_LATEST}"
+
     - echo "Pushing server image to Artifactory"
     - docker push "$SERVER_FULL_IMAGE_NAME"
+
+    - echo "Pushing :latest tag to Artifactory"
+    - docker push "$SERVER_FULL_IMAGE_LATEST"
 
     # Build API
     - echo "Building Region Analytics API Docker Image (ARM64)"
     - echo $API_FULL_IMAGE_NAME
     - cd $CI_PROJECT_DIR/solutions-microservices/${REGION_SOURCE_PATH}/${API_SRC_DIR} && docker build --platform ${TARGET_ARCH} -t "$API_FULL_IMAGE_NAME" .
 
+    - echo "Tagging the just-built image as :latest"
+    - docker tag "${API_FULL_IMAGE_NAME}" "${API_FULL_IMAGE_LATEST}"
+
     - echo "Pushing API image to Artifactory"
     - docker push "$API_FULL_IMAGE_NAME"
+
+    - echo "Pushing :latest tag to Artifactory"
+    - docker push "$API_FULL_IMAGE_LATEST"
+
 
 # ---------------------------------------------------------
 # Use the built server image inside CI
