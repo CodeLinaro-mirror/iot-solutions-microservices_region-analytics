@@ -40,7 +40,7 @@ variables:
   # ---------------------------------------------------------
   SOLUTIONS_MICROSERVICES_REPO_URL: "https://git.codelinaro.org/clo/le/solutions-microservices.git"
   SOLUTIONS_MICROSERVICES_BRANCH: "iot-solutions.lnx.1.0"
-  SOLUTIONS_MICROSERVICES_COMMIT: "f4bd6cd6144f59cdffedf6a49277cd565d818e53"
+  SOLUTIONS_MICROSERVICES_COMMIT: "283887d199ec5a52519e389ffb6df5c3203ea81b"
   REGION_SOURCE_PATH: microservices/analytics/region-analytics
   SERVER_SRC_DIR: "region-analytics-server"
   API_SRC_DIR: "region-analytics-api"
